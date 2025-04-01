@@ -24,6 +24,7 @@
                 echo "<h3 style='color: red;'> ERRORE SCONOSCIUTO</h3>";
                 break;
         }
+        echo "<a href='../pages/paginalogin.html'>Torna indietro</a>";
     ?>
 </body>
 </html>

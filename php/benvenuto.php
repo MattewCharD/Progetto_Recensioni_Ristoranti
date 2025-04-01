@@ -1,3 +1,7 @@
+<?php
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +14,7 @@
 <body>
     <?php
 
-    echo "Benvenuto " .$_SESSION["username"];
+    echo "Benvenuto " .$_SESSION["username"] ."<br>";
 
     echo "Effettua il logout: <a href ='./scriptlogout.php'>Logout</a>";
 
