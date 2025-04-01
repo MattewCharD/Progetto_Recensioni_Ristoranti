@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <title>login</title>
+</head>
+
+<body>
+    <form action="../php/scriptlogin.php" method="post" id="myForm">
+        <div class="login wrap">
+            <div class="h1">Login</div>
+            <input placeholder="Username" id="user" name="username" type="text">
+            <input placeholder="Password" id="password" name="password" type="password" pattern="^.{8,}$">
+            <input value="Login" class="btn" type="submit">
+            <span class="span">Don't have an account? <a href="#">Sign up</a></span>
+        </div>
+
+    </form>
+
+</body>
+
+</html>
