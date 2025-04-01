@@ -145,3 +145,7 @@ body {
 .span a {
   color: #00ddeb;
 }
+
+.errore {
+  color: red;
+}
