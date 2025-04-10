@@ -4,14 +4,14 @@
 
         if($_POST["username"]!="" && $_POST["password"]!=""){
             $username = $_POST["username"];
-            $password = $_POST["password"];
+            $passwordHash = hash("sha256", $_POST["password"]);    
             
         }    else {
             header('Location: ../pages/paginalogin.html');
             
-        }
+        }  
         $_SESSION["username"] = $_POST["username"];
-        $_SESSION["password"] = $_POST["password"];
+        $_SESSION["password"] = $passwordHash;
 
         $qr = "SELECT * FROM UTENTE u where u.username = '". $_SESSION["username"]."';";
         $result = $conn->query($qr);
