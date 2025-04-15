@@ -1,3 +1,37 @@
+<?php
+    session_start();
+    
+    if(isset($_SESSION["errore"])){
+        $err = $_SESSION["errore"];
+        switch ($err) {
+
+            //Errore registrazione inserimento
+            case 'insertReg':
+                echo "<h3 style='color: red;'> Inserimento Fallito</h3>";
+                session_unset($_SESSION["errore"]);
+                break;
+
+            //Errore registrazione username
+            case 'userReg':
+                echo "<h3 style='color: red;'> Username già in uso</h3>";
+                session_unset($_SESSION["errore"]);
+                break;
+
+            //Errore registrazione email
+            case 'emailError':
+                echo "<h3 style='color: red;'> Email già in uso</h3>";
+                session_unset($_SESSION["errore"]);
+                break;
+
+            default:
+                echo "<h3 style='color: red;'> ERRORE SCONOSCIUTO</h3>";
+                session_unset($_SESSION["errore"]);
+                break;
+        }
+    }
+          
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

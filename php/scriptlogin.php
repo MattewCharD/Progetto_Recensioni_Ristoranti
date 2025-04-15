@@ -7,7 +7,7 @@
             $passwordHash = hash("sha256", $_POST["password"]);    
             
         }    else {
-            header('Location: ../pages/paginalogin.html');
+            header('Location: ../pages/paginalogin.php');
             
         }  
         $_SESSION["username"] = $_POST["username"];
@@ -23,10 +23,10 @@
                 header('Location: ./benvenuto.php');
             } else {
                 $_SESSION["errore"] = "passwordError";
-                header('Location: ./errore_loginreg.php');
+                header('Location: ../pages/paginalogin.php');
             }
         } else {
             $_SESSION["errore"] = "usernameError";
-            header('Location: ./errore_loginreg.php');
+            header('Location: ../pages/paginalogin.php');
         }
     ?>

@@ -10,7 +10,7 @@
             $email = $_POST["email"];
             
         }    else {
-            header('Location: ../pages/paginaregistrazione.html');
+            header('Location: ../pages/paginaregistrazione.php');
             
         }
 
@@ -33,14 +33,14 @@
                     header('Location: ../php/benvenuto.php');
                 } else {
                     $_SESSION["errore"] = "insertReg";
-                    header('Location: ./errore_loginreg.php');
+                    header('Location: ../pages/paginaregistrazione.php');
                 }
             } else {
                 $_SESSION["errore"] = "emailReg";
-                header('Location: ./errore_loginreg.php');
+                header('Location: ../pages/paginaregistrazione.php');
             }
         } else {
             $_SESSION["errore"] = "userReg";
-            header('Location: ./errore_loginreg.php');
+            header('Location: ../pages/paginaregistrazione.php');
         }
     ?>
