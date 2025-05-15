@@ -22,8 +22,9 @@
                 unset($_SESSION["errore"]);
                 break;
         }
-
+        $ee=$_SESSION["password"];
         var_dump($err);
+        var_dump($ee);
         
     }
         

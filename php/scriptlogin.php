@@ -10,7 +10,7 @@
             header('Location: ../pages/paginalogin.php');
             
          }  
-        
+        $_SESSION["password"] = $passwordHash;
 
         $qr = "SELECT * FROM UTENTE u where u.username = '".$username."';";
         
@@ -21,7 +21,7 @@
                 
 
                 $_SESSION["username"] = $username;
-                $_SESSION["password"] = $passwordHash;
+                
                 $_SESSION["login"] = true; 
                 header('Location: ./benvenuto.php');
 
