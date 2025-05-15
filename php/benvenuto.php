@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    if(!(isset( $_SESSION["username"]) and isset($_SESSION["password"]))){
+    if(!(isset( $_SESSION["username"]) and isset($_SESSION["password"]) and isset($_SESSION["login"]))){
           
         header('Location: ../pages/paginalogin.php');
         

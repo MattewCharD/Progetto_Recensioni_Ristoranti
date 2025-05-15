@@ -22,6 +22,9 @@
                 unset($_SESSION["errore"]);
                 break;
         }
+
+        var_dump($err);
+        
     }
         
         // sistema utenti sul db non ashati --> password: cognome1234
@@ -44,7 +47,7 @@
             <input placeholder="Username" id="user" name="username" type="text" required>
             <input placeholder="Password" id="password" name="password" type="password" pattern="^.{8,}$" required>
             <input value="Login" class="btn" type="submit">
-            <span class="span">Don't have an account? <a href="./paginaregistrazione.html">Sign up</a></span>
+            <span class="span">Don't have an account? <a href="./paginaregistrazione.php">Sign up</a></span>
         </div>
 
     </form>
