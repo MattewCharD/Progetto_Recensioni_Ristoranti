@@ -1,7 +1,15 @@
 <?php
     session_start();
     include("connessione.php");
+
+    if(!(isset($_SESSION["login"]))){  
+        $_SESSION["errore"] = "sessionError";
+        header('Location: ../pages/paginalogin.php');
+        exit();
+    } 
+
     $nome_ristorante = $_POST['nome_ristorante'];
+
     $voto = intval($_POST['voto']);
     $id = intval($_SESSION['id']); 
     $query = "SELECT codice FROM ristorante WHERE nome = '$nome_ristorante'";

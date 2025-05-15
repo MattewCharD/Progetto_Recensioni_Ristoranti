@@ -1,9 +1,7 @@
 <?php
     session_start();
-    include("connessione.php");
     if(isset($_SESSION["errore"])){
-        $err = $_SESSION["errore"];
-        
+        $err = $_SESSION["errore"]; 
 
         switch ($err) {
 
@@ -17,14 +15,15 @@
                 $_SESSION["errore"] = "Password Errata. ";
                 break;
 
+            case 'sessionError':
+                $_SESSION["errore"] = "Sessione scaduta ";
+                break;
+
             default:
                 $_SESSION["errore"] = "ERRORE SCONOSCIUTO ";
                 break;
         }
-           
     }
-        
-        // sistema utenti sul db non ashati --> password: cognome1234
 ?>
 
 <!DOCTYPE html>

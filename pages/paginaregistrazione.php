@@ -1,6 +1,5 @@
 <?php
     session_start();
-    include("connessione.php");
     
     if(isset($_SESSION["errore"])){
         $err = $_SESSION["errore"];

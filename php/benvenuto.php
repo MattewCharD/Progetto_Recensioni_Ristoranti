@@ -2,11 +2,40 @@
     session_start();
     include("connessione.php");
 
-    if(!(isset( $_SESSION["username"]) and isset($_SESSION["password"]) and isset($_SESSION["login"]))){
-          
+    // per mappa 2 input text item nascosti
+    if(!(isset( $_SESSION["username"]) and isset($_SESSION["password"]) and isset($_SESSION["login"]))){  
         header('Location: ../pages/paginalogin.php');
-        
+        exit();
     } 
+
+    // --------------------------------------- Errori ----------------------------------------
+
+    if(isset($_SESSION["errore"])){
+        $err = $_SESSION["errore"];
+        switch ($err) {
+
+            //Errore registrazione inserimento
+            case 'insertReg':
+                $_SESSION["errore"] = "Inserimento Fallito";
+                break;
+            //Errore registrazione username
+            case 'userReg':
+                $_SESSION["errore"] = "Username già in uso";
+                break;
+
+            //Errore registrazione email
+            case 'emailError':
+                $_SESSION["errore"] = "Email già in uso";
+                break;
+
+            default:
+                $_SESSION["errore"] = "ERRORE SCONOSCIUTO";
+                break;
+        }
+    }
+
+    // -------------------------------- Dati Utente Loggato ----------------------------------
+
     $sql = "SELECT * FROM utente WHERE username = '".$_SESSION["username"]."'";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -18,7 +47,8 @@
         $_SESSION["id"] = $row["id_utente"];
         $id = $_SESSION["id"];
     } else {
-        echo "<p class='text-danger'>Utente non trovato.</p>";
+        $_SESSION["errore"] = "sessionError";
+        header('Location: ../pages/paginalogin.php');
         exit();
     }
     
@@ -48,30 +78,32 @@
             <li> <?php echo $email ?></li>
         </ul><br>
         
-        
         <p>Numero recensioni effetuate:</p>
-         <?php
+        <?php
             $sql = "SELECT COUNT(*) as numRecensioni FROM `recensione` WHERE idutente = $id;";
             $result = $conn->query($sql);
             $row = $result->fetch_assoc();
             $numRecensioni = $row["numRecensioni"];
             echo $numRecensioni;
-        ?><br><br>
+        ?>
+        <br><br>
+
+        <!-- Stampo recensioni -->
         <div>
             <?php
                 if ($numRecensioni > 0) {
                     $sql = "SELECT ris.nome, ris.indirizzo, rec.voto, rec.data FROM `recensione` rec JOIN ristorante ris ON rec.codiceristorante = ris.codice JOIN utente u ON rec.idutente = u.id WHERE u.id = $id;";
                         $result = $conn->query($sql);
                         echo "<table class='table table-bordered border-primary'>
-                            <thead>
+                            
                                 <tr>
-                                    <th scope='col'>Nome Ristorante</th>
-                                    <th scope='col'>Indirizzo</th>
-                                    <th scope='col'>Voto</th>
-                                    <th scope='col'>Data</th>
-                                </tr>
-                            </thead>
-                            <tbody>";
+                                    <th>Nome Ristorante</th>
+                                    <th>Indirizzo</th>
+                                    <th>Voto</th>
+                                    <th>Data</th>
+                                </tr>";
+                            
+                            
                             while($row = $result->fetch_assoc()) {
                                 echo "<tr>";
                                 echo "<td>" . $row["nome"] . "</td>";
@@ -80,7 +112,7 @@
                                 echo "<td>" . $row["data"] . "</td>";
                                 echo "</tr>";
                             }
-                        echo "</tbody></table>";
+                        echo "</table>";
                 } else {
                     echo "<p class='text-warning'>Nessuna recensione effettuata.</p>";
                 }
@@ -95,16 +127,16 @@
                 }
             ?>
         </div>
-<br><br>
+        <br><br>
         <!-- INSERIMENTO RECENSIONE -->
         <div>
             <h2>Inserisci una nuova recensione</h2>
             <br><br>
-            <form action="inseriscirecensione.php" method="POST" class="form-recensione">
+            <form action="inseriscirecensione.php" method="POST">
                 <label for="ristorante" class="form-label">Seleziona un ristorante:</label>
-                <select id="ristorante" name="ristorante"  required>
+                <select id="ristorante" name="ristorante" required>
                     <?php
-                    $sqlRistoranti = "SELECT codice, nome FROM ristorante WHERE codice NOT IN (SELECT codiceristorante  FROM recensione WHERE idutente = $idUtente)";
+                    $sqlRistoranti = "SELECT codice, nome FROM ristorante WHERE codice NOT IN (SELECT codiceristorante  FROM recensione WHERE idutente = $id)";
                     $resultRistoranti = $conn->query($sqlRistoranti);
 
                     if ($resultRistoranti->num_rows > 0) {
@@ -121,13 +153,13 @@
                 <div>
                     <?php for ($i = 1; $i <= 5; $i++): ?>
                         <input type="radio" id="voto<?= $i ?>" name="voto" value="<?= $i ?>" required>
-                        <label for="voto<?= $i ?>"> <?php echo$i ?> <i class="bi bi-star"></i></label>
+                        <label for="voto<?= $i ?>"> <?php echo$i ?> <i class=" bi-star"></i></label>
                     <?php endfor; ?>
                 </div>
                 <button type="submit">Invia Recensione</button>
             </form>
         </div>
-<br><br>
+        <br><br>
         <p>Effettua il logout:</p>
         <main>
             <a href="./scriptlogout.php" class="btn">Log-Out</a>
