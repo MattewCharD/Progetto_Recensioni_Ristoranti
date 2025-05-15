@@ -1,5 +1,6 @@
 <?php
     session_start();
+    include("connessione.php");
     
     if(isset($_SESSION["errore"])){
         $err = $_SESSION["errore"];
@@ -7,25 +8,20 @@
 
             //Errore registrazione inserimento
             case 'insertReg':
-                echo "<h3 style='color: red;'> Inserimento Fallito</h3>";
-                session_unset($_SESSION["errore"]);
+                $_SESSION["errore"] = "Inserimento Fallito";
                 break;
-
             //Errore registrazione username
             case 'userReg':
-                echo "<h3 style='color: red;'> Username già in uso</h3>";
-                session_unset($_SESSION["errore"]);
+                $_SESSION["errore"] = "Username già in uso";
                 break;
 
             //Errore registrazione email
             case 'emailError':
-                echo "<h3 style='color: red;'> Email già in uso</h3>";
-                session_unset($_SESSION["errore"]);
+                $_SESSION["errore"] = "Email già in uso";
                 break;
 
             default:
-                echo "<h3 style='color: red;'> ERRORE SCONOSCIUTO</h3>";
-                session_unset($_SESSION["errore"]);
+                $_SESSION["errore"] = "ERRORE SCONOSCIUTO";
                 break;
         }
     }
@@ -60,6 +56,16 @@
 
     </form>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            <?php
+                if(isset($_SESSION["errore"])) {                    
+                    echo "alert('".$_SESSION["errore"]."');";
+                    unset($_SESSION["errore"]);
+                }
+            ?>
+        });
+    </script>
 </body>
 
 </html>

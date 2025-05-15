@@ -1,31 +1,27 @@
 <?php
     session_start();
+    include("connessione.php");
     if(isset($_SESSION["errore"])){
         $err = $_SESSION["errore"];
         
+
         switch ($err) {
 
             //Errore login username
             case 'usernameError':
-                echo "<h3 class='errore'> Username errato o non esiste.</h3>";
-                unset($_SESSION["errore"]);
+                $_SESSION["errore"] = "Username errato o non esiste.";
                 break;
 
             //Errore login passsword
             case 'passwordError':
-                echo "<h3 style='color: red;'> Password Errata.</h3>";
-                unset($_SESSION["errore"]);
+                $_SESSION["errore"] = "Password Errata. ";
                 break;
 
             default:
-                echo "<h3 style='color: red;'> ERRORE SCONOSCIUTO</h3>";
-                unset($_SESSION["errore"]);
+                $_SESSION["errore"] = "ERRORE SCONOSCIUTO ";
                 break;
         }
-        $ee=$_SESSION["password"];
-        var_dump($err);
-        var_dump($ee);
-        
+           
     }
         
         // sistema utenti sul db non ashati --> password: cognome1234
@@ -53,10 +49,16 @@
 
     </form>
 
-
-
-    
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            <?php
+                if(isset($_SESSION["errore"])) {                    //funzione per alert con messaggio
+                    echo "alert('".$_SESSION["errore"]."');";
+                    unset($_SESSION["errore"]);
+                }
+            ?>
+        });
+    </script>
 </body>
 
 </html>

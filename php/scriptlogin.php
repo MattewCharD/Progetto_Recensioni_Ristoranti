@@ -17,7 +17,7 @@
         if($conn->query($qr)->num_rows > 0){
             $qr2 = "SELECT * from utente u where u.username = '".$username."' and u.password = '".$passwordHash."';";
             
-            if($conn->query($qr2)->num_rows != 0){  
+            if($conn->query($qr2)->num_rows > 0){  
                 
 
                 $_SESSION["username"] = $username;
