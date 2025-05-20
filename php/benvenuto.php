@@ -4,6 +4,7 @@
 
     // per mappa 2 input text item nascosti
     if(!(isset( $_SESSION["username"]) and isset($_SESSION["password"]) and isset($_SESSION["login"]))){  
+        $_SESSION["errore"] = "sessionError";
         header('Location: ../pages/paginalogin.php');
         exit();
     } 
@@ -15,17 +16,25 @@
         switch ($err) {
 
             //Errore registrazione inserimento
-            case 'insertReg':
-                $_SESSION["errore"] = "Inserimento Fallito";
+            case 'sessionError':
+                $_SESSION["errore"] = "Errore, sessione scaduta, riprova";
                 break;
             //Errore registrazione username
-            case 'userReg':
-                $_SESSION["errore"] = "Username già in uso";
+            case 'insRecen':
+                $_SESSION["errore"] = "Hai già fatto una recensione per questo ristorante!";
                 break;
 
             //Errore registrazione email
-            case 'emailError':
-                $_SESSION["errore"] = "Email già in uso";
+            case 'success':
+                $_SESSION["errore"] = "Recensione inserita con successo!";
+                break;
+
+            case 'insRecErr':
+                $_SESSION["errore"] = "Errore in inserimento";
+                break;
+
+            case 'alrdlog':
+                $_SESSION["errore"] = "Sei già loggato";
                 break;
 
             default:
@@ -78,7 +87,7 @@
             <li> <?php echo $email ?></li>
         </ul><br>
         
-        <p>Numero recensioni effetuate:</p>
+        <span>Numero recensioni effetuate: </span>
         <?php
             $sql = "SELECT COUNT(*) as numRecensioni FROM `recensione` WHERE idutente = $id;";
             $result = $conn->query($sql);
@@ -88,11 +97,11 @@
         ?>
         <br><br>
 
-        <!-- Stampo recensioni -->
+        <!-- ------------------------------------------ Stampo recensioni -------------------------------------------- -->
         <div>
             <?php
                 if ($numRecensioni > 0) {
-                    $sql = "SELECT ris.nome, ris.indirizzo, rec.voto, rec.data FROM `recensione` rec JOIN ristorante ris ON rec.codiceristorante = ris.codice JOIN utente u ON rec.idutente = u.id WHERE u.id = $id;";
+                    $sql = "SELECT ris.nome, ris.indirizzo, rec.voto, rec.data FROM `recensione` rec JOIN ristorante ris ON rec.codiceristorante = ris.codice JOIN utente u ON rec.idutente = u.id_utente WHERE u.id_utente = $id;";
                         $result = $conn->query($sql);
                         echo "<table class='table table-bordered border-primary'>
                             
@@ -128,7 +137,7 @@
             ?>
         </div>
         <br><br>
-        <!-- INSERIMENTO RECENSIONE -->
+        <!-- ---------------------------------------- Inserimento Recensione --------------------------------------- -->
         <div>
             <h2>Inserisci una nuova recensione</h2>
             <br><br>
@@ -136,9 +145,8 @@
                 <label for="ristorante" class="form-label">Seleziona un ristorante:</label>
                 <select id="ristorante" name="ristorante" required>
                     <?php
-                    $sqlRistoranti = "SELECT codice, nome FROM ristorante WHERE codice NOT IN (SELECT codiceristorante  FROM recensione WHERE idutente = $id)";
+                    $sqlRistoranti = "SELECT r.codice, r.nome FROM ristorante r WHERE r.codice NOT IN (SELECT re.codiceristorante  FROM recensione re WHERE idutente = $id)";
                     $resultRistoranti = $conn->query($sqlRistoranti);
-
                     if ($resultRistoranti->num_rows > 0) {
                         while ($rowRistorante = $resultRistoranti->fetch_assoc()) {
                             echo "<option value='" .$rowRistorante['codice'] . "'>" . $rowRistorante['nome'] . "</option>";
@@ -159,16 +167,27 @@
                 <button type="submit">Invia Recensione</button>
             </form>
         </div>
-        <br><br>
-        <p>Effettua il logout:</p>
+
+        
+        <p id="logout_p">Effettua il logout:</p>
         <main>
             <a href="./scriptlogout.php" class="btn">Log-Out</a>
-        </main><br><br>
+        </main><br>
 
         <footer>
             <p>&copy; 2025  - Tutti i diritti riservati</p>
         </footer>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            <?php
+                if(isset($_SESSION["errore"])) {                    //funzione per alert con messaggio
+                    echo "alert('".$_SESSION["errore"]."');";
+                    unset($_SESSION["errore"]);
+                }
+            ?>
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 </body>
 </html>

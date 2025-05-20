@@ -2,33 +2,32 @@
     session_start();
     include("connessione.php");
 
-    if(!(isset($_SESSION["login"]))){  
-        $_SESSION["errore"] = "sessionError";
-        header('Location: ../pages/paginalogin.php');
+    if(isset($_SESSION["login"])){  
+        $_SESSION["errore"] = "alrdlog";
+        header('Location: ./benvenuto.php');
         exit();
     } 
 
-    $nome_ristorante = $_POST['nome_ristorante'];
+    $id = $_SESSION['id']; 
 
+    $id_ristorante = $_POST['ristorante'];
     $voto = intval($_POST['voto']);
-    $id = intval($_SESSION['id']); 
-    $query = "SELECT codice FROM ristorante WHERE nome = '$nome_ristorante'";
-    $result = $conn->query($query);
-    $row = $result->fetch_assoc();
-    $ristorante_id = $row['codice'];
-    $query = "SELECT * FROM recensione WHERE idutente = '$id' AND codiceristorante = '$ristorante_id'";
-    $result = $conn->query($query);
+    $qr = "SELECT * FROM recensione re WHERE re.idutente = '$id' AND re.codiceristorante = '$id_ristorante'";
+    $result = $conn->query($qr);
     $row = $result->fetch_assoc();
     if ($result->num_rows > 0) {
-        $_SESSION["errMessage"] = 'Recensione su questo ristorante già effettuata';
+        $_SESSION["errore"] = 'insRecen';
     } else {
-        $query = "INSERT INTO recensione (voto, idutente, codiceristorante) VALUES ($voto, $id, '$ristorante_id')";
-        if ($conn->query($query) === TRUE) {
-            $_SESSION["errMessage"] = 'Recensione inserita con successo';
+        $qr = "INSERT INTO recensione (voto, idutente, codiceristorante) VALUES (".$voto.",". $id.",'".$id_ristorante."')";
+        echo $qr;
+        $result = $conn->query($qr);
+        if ($result) {
+            $_SESSION["errore"] = 'success';
+            $_SESSION['esito_recensione'] === true;
         } else {
-            $_SESSION["errMessage"] = 'errore';
+            $_SESSION["errore"] = 'insRecErr';
         }
     }
-    header("Location: benvenuto.php");
+    header("Location: ./benvenuto.php");
     exit;
 ?>
