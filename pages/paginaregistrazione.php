@@ -9,6 +9,11 @@
             case 'insertReg':
                 $_SESSION["errore"] = "Inserimento Fallito";
                 break;
+
+            case 'missingFields':
+                $_SESSION["errore"] = "Inserisci i campi!";
+                break;
+                
             //Errore registrazione username
             case 'userReg':
                 $_SESSION["errore"] = "Username già in uso";
@@ -50,7 +55,7 @@
             <input placeholder="Username" id="username" name="username" type="text" required>
             <input placeholder="Password" id="password" name="password" type="password" pattern="^.{8,}$" required>
             <input value="Sign Up" class="btn" type="submit">
-            <span class="span">Already have an account? <a href="./paginalogin.html">Sign in here</a></span>
+            <span class="span">Already have an account? <a href="./paginalogin.php">Sign in here</a></span>
         </div>
 
     </form>

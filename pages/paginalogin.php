@@ -10,13 +10,17 @@
                 $_SESSION["errore"] = "Username errato o non esiste.";
                 break;
 
+            case 'regSucc':
+                $_SESSION["errore"] = "Registrato con successo!";
+                break;
+
             //Errore login passsword
             case 'passwordError':
                 $_SESSION["errore"] = "Password Errata. ";
                 break;
 
             case 'sessionError':
-                $_SESSION["errore"] = "Sessione scaduta ";
+                $_SESSION["errore"] = "Non sei loggato! ";
                 break;
 
             default:

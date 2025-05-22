@@ -2,6 +2,12 @@
         include("connessione.php");
         session_start();
 
+        if(isset($_SESSION["login"])){  
+        $_SESSION["errore"] = "alrdlog";
+        header('Location: ./benvenuto.php');
+        exit();
+        } 
+
         if($_POST["username"]!="" && $_POST["password"]!=""){
             $username = $_POST["username"];
             $passwordHash = hash("sha256", $_POST["password"]);  

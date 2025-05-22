@@ -24,7 +24,7 @@
                 $_SESSION["errore"] = "Hai già fatto una recensione per questo ristorante!";
                 break;
 
-            //Errore registrazione email
+            //Inserimento recensione con successo
             case 'success':
                 $_SESSION["errore"] = "Recensione inserita con successo!";
                 break;
@@ -34,7 +34,7 @@
                 break;
 
             case 'alrdlog':
-                $_SESSION["errore"] = "Sei già loggato";
+                $_SESSION["errore"] = "Sei già loggato! Devi prima disconnetterti.";
                 break;
 
             default:

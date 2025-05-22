@@ -11,6 +11,7 @@
             
         }    else {
             header('Location: ../pages/paginaregistrazione.php');
+            $_SESSION["errore"] = "missingFields";
             
         }
 
@@ -30,7 +31,9 @@
                 if($result = $conn->query($qr3)){
                     $_SESSION["username"] = $username;
                     $_SESSION["password"] = $passwordHash;
-                    header('Location: ../php/benvenuto.php');
+                    $_SESSION["errore"] = "regSucc";
+
+                    header('Location: ../pages/paginalogin.php');
                 } else {
                     $_SESSION["errore"] = "insertReg";
                     header('Location: ../pages/paginaregistrazione.php');
