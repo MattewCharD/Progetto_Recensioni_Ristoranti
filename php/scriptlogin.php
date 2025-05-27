@@ -24,12 +24,32 @@
             $qr2 = "SELECT * from utente u where u.username = '".$username."' and u.password = '".$passwordHash."';";
             
             if($conn->query($qr2)->num_rows > 0){  
-                
+
+            /*---------------Controllo admin-------------*/ 
+
 
                 $_SESSION["username"] = $username;
-                
                 $_SESSION["login"] = true; 
-                header('Location: ./benvenuto.php');
+
+                $sql = "SELECT u.admin FROM `utente` u WHERE u.username = '$username';";
+                $result = $conn->query($sql);
+                $row = $result->fetch_assoc();
+                $admin = $row["admin"];
+
+                if ($admin== 1) {
+
+                    
+                    $_SESSION["admin"] = true;
+                    header('Location: ./pannelloAdmin.php');
+                    exit();
+
+                } else {
+
+                    $_SESSION["username"] = $username;
+                    $_SESSION["login"] = true; 
+                    header('Location: ./benvenuto.php');
+                    exit();
+                }
 
             } else {
                 $_SESSION["errore"] = "passwordError";
