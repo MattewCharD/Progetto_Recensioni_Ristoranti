@@ -147,7 +147,7 @@
             <h2>Info ristoranti</h2>
             <br><br>
             <form action="info_ristorante.php" method="GET">
-                <select id="ristorante" name="ristorante" required>
+                <select name="info_nome" required>
                     <?php
                     $sqlRistoranti = "SELECT r.codice, r.nome FROM ristorante r";
                     $resultRistoranti = $conn->query($sqlRistoranti);
