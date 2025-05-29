@@ -15,24 +15,19 @@
         $err = $_SESSION["errore"];
         switch ($err) {
 
-            //Errore registrazione inserimento
-            case 'sessionError':
-                $_SESSION["errore"] = "Errore, sessione scaduta, riprova";
-                break;
-            //Errore registrazione username
-            case 'insRecen':
-                $_SESSION["errore"] = "Hai già fatto una recensione per questo ristorante!";
+            
+            case 'alrdRis':
+                $_SESSION["errore"] = "il Ristorante esiste già";
                 break;
 
-            //Inserimento recensione con successo
-            case 'success':
-                $_SESSION["errore"] = "Recensione inserita con successo!";
+            case 'insRisSuc':
+                $_SESSION["errore"] = "Ristorante inserito con successo";
                 break;
 
-            case 'insRecErr':
-                $_SESSION["errore"] = "Errore in inserimento";
+            case 'insRisFail':
+                $_SESSION["errore"] = "Impossibile aggiungere il ristorante";
                 break;
-
+        
             case 'alrdlog':
                 $_SESSION["errore"] = "Sei già loggato! Devi prima disconnetterti.";
                 break;
@@ -86,12 +81,12 @@
         </ul><br>
         <br><br>
 
-        <!-- ------------------------------------------ Stampo ristoranti-------------------------------------------- -->
+        <!-- ------------------------------------------ Stampo ristoranti -------------------------------------------- -->
         <div>
             <?php
                 $sql = "SELECT ris.nome , ris.codice, ris.indirizzo, ris.citta, COUNT(rec.id_recensione)  as numRecRis  
                         FROM `recensione`rec RIGHT join ristorante ris on rec.codiceristorante = ris.codice 
-                        group by ris.nome , ris.codice, ris.indirizzo, ris.citta;";
+                        group by ris.codice, ris.nome , ris.indirizzo, ris.citta;";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0){
 
@@ -116,7 +111,7 @@
                     echo "</table>";
                 } else {
 
-                    echo "Nessun Ristorante inserito;";
+                    echo "Nessun ristorante presente";
                 }
             ?>
         </div>
@@ -128,16 +123,16 @@
             <form action="inserisciristorante.php" method="POST">
 
                 <label>Inserisci il codice:</label>
-                <input type="text" required>
+                <input type="text" name="codice" required>
 
                 <label>Inserisci il nome:</label>
-                <input type="text" required>
+                <input type="text" name="nome" required>
 
                 <label>Inserisci l'indirizzo:</label> 
-                <input type="text" required>
+                <input type="text" name="indirizzo" required>
 
-                <label for="ristorante" class="form-label">Seleziona la città:</label>
-                <select id="ristorante" name="ristorante" required>
+                <label for="citta" class="form-label">Seleziona la città:</label>
+                <select  name="citta" required>
                     <option value="Firenze">Firenze</option>
                     <option value="Prato">Prato</option>
                     <option value="Pistoia">Pistoia</option>

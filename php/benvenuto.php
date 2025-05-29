@@ -29,6 +29,10 @@
                 $_SESSION["errore"] = "Recensione inserita con successo!";
                 break;
 
+            case 'noAdmin' : 
+                $_SESSION["errore"] = "Non sei admin!";
+                break;
+
             case 'insRecErr':
                 $_SESSION["errore"] = "Errore in inserimento";
                 break;
@@ -137,6 +141,30 @@
             ?>
         </div>
         <br><br>
+
+        <!-- ---------------------------------------- Vedi info ristoranti --------------------------------------- -->
+        <div>
+            <h2>Info ristoranti</h2>
+            <br><br>
+            <form action="info_ristorante.php" method="GET">
+                <select id="ristorante" name="ristorante" required>
+                    <?php
+                    $sqlRistoranti = "SELECT r.codice, r.nome FROM ristorante r";
+                    $resultRistoranti = $conn->query($sqlRistoranti);
+                    if ($resultRistoranti->num_rows > 0) {
+                        while ($row = $resultRistoranti->fetch_assoc()) {
+                            echo "<option value='" .$row['codice'] . "'>" . $row['nome'] . "</option>";
+                        }
+                    } else {
+                        echo "<option disabled>Nessun ristorante disponibile</option>";
+                    }
+                    ?>
+                </select>
+                
+                <button type="submit">Vedi</button>
+            </form>
+        </div>
+<br><br>
         <!-- ---------------------------------------- Inserimento Recensione --------------------------------------- -->
         <div>
             <h2>Inserisci una nuova recensione</h2>
