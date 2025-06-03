@@ -41,7 +41,7 @@
 </head>
 
 <body>
-    <form action="../php/scriptlogin.php" method="post" id="myForm">
+    <form action="../php/scriptlogin.php" method="POST" id="myForm">
         <div class="divform   ">
             <div class="h1">Login</div>
             <input placeholder="Username" id="user" name="username" type="text" required>

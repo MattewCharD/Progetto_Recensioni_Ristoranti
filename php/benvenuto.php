@@ -63,8 +63,7 @@
         $_SESSION["errore"] = "sessionError";
         header('Location: ../pages/paginalogin.php');
         exit();
-    }
-    
+    }  
 ?>
 
 <!DOCTYPE html>
@@ -90,6 +89,9 @@
             <li> <?php echo $cognome ?></li>
             <li> <?php echo $email ?></li>
         </ul><br>
+
+        <p>Cambia password: </p>
+        <button></button>
         
         <span>Numero recensioni effetuate: </span>
         <?php
@@ -101,31 +103,32 @@
         ?>
         <br><br>
 
-        <!-- ------------------------------------------ Stampo recensioni -------------------------------------------- -->
+    <!-- ------------------------------------------ Stampo recensioni -------------------------------------------- -->
         <div>
             <?php
                 if ($numRecensioni > 0) {
                     $sql = "SELECT ris.nome, ris.indirizzo, rec.voto, rec.data FROM `recensione` rec JOIN ristorante ris ON rec.codiceristorante = ris.codice JOIN utente u ON rec.idutente = u.id_utente WHERE u.id_utente = $id;";
-                        $result = $conn->query($sql);
-                        echo "<table class='table table-bordered border-primary'>
-                            
-                                <tr>
-                                    <th>Nome Ristorante</th>
-                                    <th>Indirizzo</th>
-                                    <th>Voto</th>
-                                    <th>Data</th>
-                                </tr>";
-                            
-                            
-                            while($row = $result->fetch_assoc()) {
-                                echo "<tr>";
-                                echo "<td>" . $row["nome"] . "</td>";
-                                echo "<td>" . $row["indirizzo"] . "</td>";
-                                echo "<td>" . $row["voto"] . "</td>";
-                                echo "<td>" . $row["data"] . "</td>";
-                                echo "</tr>";
-                            }
-                        echo "</table>";
+                    $result = $conn->query($sql);
+                    echo "<form action='.elimina_recensioni.php' method='delete' id='e'>
+                        <table class='table table-bordered border-primary'>  
+                            <tr>
+                                <th>Elimina</th>
+                                <th>Nome Ristorante</th>
+                                <th>Indirizzo</th>
+                                <th>Voto</th>
+                                <th>Data</th>
+                            </tr>";
+
+                    while($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td><input type='checkbox' name='select'></td>";
+                        echo "<td>" . $row["nome"] . "</td>";
+                        echo "<td>" . $row["indirizzo"] . "</td>";
+                        echo "<td>" . $row["voto"] . "</td>";
+                        echo "<td>" . $row["data"] . "</td>";
+                        echo "</tr>";
+                    }
+                    echo "</table><input value='Elimina' class='btn' type='submit'></form>";
                 } else {
                     echo "<p class='text-warning'>Nessuna recensione effettuata.</p>";
                 }
@@ -142,7 +145,7 @@
         </div>
         <br><br>
 
-        <!-- ---------------------------------------- Vedi info ristoranti --------------------------------------- -->
+     <!-- ---------------------------------------- Vedi info ristoranti --------------------------------------- -->
         <div>
             <h2>Info ristoranti</h2>
             <br><br>
@@ -155,17 +158,16 @@
                         while ($row = $resultRistoranti->fetch_assoc()) {
                             echo "<option value='" .$row['codice'] . "'>" . $row['nome'] . "</option>";
                         }
+                        echo "</select>";
+                        echo "<button type='submit'>Vedi</button>";
                     } else {
                         echo "<option disabled>Nessun ristorante disponibile</option>";
                     }
                     ?>
-                </select>
-                
-                <button type="submit">Vedi</button>
             </form>
         </div>
 <br><br>
-        <!-- ---------------------------------------- Inserimento Recensione --------------------------------------- -->
+    <!-- ---------------------------------------- Inserimento Recensione --------------------------------------- -->
         <div>
             <h2>Inserisci una nuova recensione</h2>
             <br><br>
@@ -196,7 +198,7 @@
             </form>
         </div>
 
-        
+    <!-- ---------------------------------------- Logout e footer --------------------------------------- -->
         <p id="logout_p">Effettua il logout:</p>
         <main>
             <a href="./scriptlogout.php" class="btn">Log-Out</a>
@@ -206,6 +208,8 @@
             <p>&copy; 2025  - Tutti i diritti riservati</p>
         </footer>
     </div>
+
+    <!-- Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             <?php
