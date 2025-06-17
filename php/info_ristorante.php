@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
+     <link rel="stylesheet" type="text/css" href="../css/cssinfo.css">
 </head>
 <body>
     <p>Info ristorante: </p>
@@ -23,9 +24,9 @@
             $qr = "Select r.nome, r.indirizzo, r.citta from ristorante r where r.codice = '".$codris."';";
             $result = $conn->query($qr);
             $row = $result->fetch_assoc();
-            echo "<span>Nome: " . $row["nome"] . "</span>";
-            echo "<span>Indirizzo: " . $row["indirizzo"] . "</span>";
-            echo "<span>Città: " . $row["citta"] . "</span>";   
+            echo "<span> Nome: " . $row["nome"] . "</span>";
+            echo "<span> Indirizzo: " . $row["indirizzo"] . "</span>";
+            echo "<span> Città: " . $row["citta"] . "</span>";   
         ?>
     </table>
 
@@ -37,17 +38,13 @@
         if ($result->num_rows > 0) {
             echo "<table>
                 <tr>
-                    <th>Nome Ristorante</th>
-                    <th>Indirizzo</th>
+                    <th>Username</th>
                     <th>Voto</th>
                     <th>Data</th>
                 </tr>";
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>
-                    <td><input type='checkbox' name='select'></td>
-                    <td>" . $row["username"] . "</td>
                     <td>" . $row["nome"] . "</td>
-                    <td>" . $row["indirizzo"] . "</td>
                     <td>" . $row["voto"] . "</td>
                     <td>" . $row["data"] . "</td>
                     </tr>";
@@ -62,7 +59,7 @@
 
 <!-- Mappa -->
         
-<div id="map" style="height: 350px; border: 1px solid #ccc;"></div>
+<div id="map" style="height: 550px; border: 1px solid #ccc;"></div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -103,6 +100,8 @@
             ?>
         });
     </script>
+    <br><br>
+    <a href="./benvenuto.php"><button>Torna Indietro</button></a>
 </body>
 
 </html>
